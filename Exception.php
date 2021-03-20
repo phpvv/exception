@@ -36,7 +36,7 @@ class Exception extends \Exception {
         $message = $asHtml ? "<b>$className</b>:\n\n" : "$className: ";
         if ($bodyMessage = $e->getMessage()) $message .= $bodyMessage;
 
-        return $message . "\r\n" . self::backtraceString($e, !$asHtml);
+        return $message . "\r\n" . self::backtraceString($e, $asHtml);
     }
 
     /**
