@@ -18,16 +18,16 @@ Created by VV Error
  */
 trait Core {
 
-    private string $origionalMessage;
+    private ?string $origionalMessage;
 
     /**
      * Error constructor.
      *
-     * @param string          $message
-     * @param int             $code
+     * @param string|null     $message
+     * @param int|null        $code
      * @param \Throwable|null $previous
      */
-    public function __construct(string $message = '', int $code = 0, \Throwable $previous = null) {
+    public function __construct(string $message = null, int $code = null, \Throwable $previous = null) {
         /** @noinspection PhpUndefinedClassInspection */
         parent::__construct(
         // fetch message hierarchically
