@@ -1,7 +1,7 @@
 {
     "name": "phpvv/exception",
     "description": "VV Exception",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -18,7 +18,7 @@
     },
     "require": {
         "php": "^8.0",
-        "phpvv/runtime": "^0.1.0"
+        "phpvv/runtime": "0.2.0"
     },
     "require-dev": {
         "jetbrains/phpstorm-attributes": "^1.0"

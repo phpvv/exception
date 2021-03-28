@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8cbf2ec67734b6c755ff5456fd86e4b9",
+    "content-hash": "12a31d577d313b5e83c9064c20e30a2c",
     "packages": [
         {
             "name": "phpvv/runtime",
-            "version": "0.1.0",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpvv/runtime.git",
-                "reference": "2fafd3e99dfcab92bd0ccec14a4c2dd1a6d76f77"
+                "reference": "d407151fd0b19ca09759ab30d8c80304911a5080"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpvv/runtime/zipball/2fafd3e99dfcab92bd0ccec14a4c2dd1a6d76f77",
-                "reference": "2fafd3e99dfcab92bd0ccec14a4c2dd1a6d76f77",
+                "url": "https://api.github.com/repos/phpvv/runtime/zipball/d407151fd0b19ca09759ab30d8c80304911a5080",
+                "reference": "d407151fd0b19ca09759ab30d8c80304911a5080",
                 "shasum": ""
             },
             "require": {
@@ -49,9 +49,9 @@
             "description": "VV Runtime",
             "support": {
                 "issues": "https://github.com/phpvv/runtime/issues",
-                "source": "https://github.com/phpvv/runtime/tree/v0.1.0"
+                "source": "https://github.com/phpvv/runtime/tree/v0.2.0"
             },
-            "time": "2021-03-20T11:10:21+00:00"
+            "time": "2021-03-28T07:57:57+00:00"
         }
     ],
     "packages-dev": [
