@@ -28,7 +28,7 @@ trait Core {
      * @param \Throwable|null $previous
      */
     public function __construct(string $message = null, int $code = null, \Throwable $previous = null) {
-        /** @noinspection PhpUndefinedClassInspection */
+        /** @noinspection PhpMultipleClassDeclarationsInspection */
         parent::__construct(
         // fetch message hierarchically
             ($this->origionalMessage = $message) // passed
@@ -64,10 +64,8 @@ trait Core {
         } elseif (is_object($fqcn)) {
             $fqcn = get_class($fqcn);
         }
-        $parts = \VV\splitNoEmpty($fqcn, '\\\\');
 
-        $camelMessage = array_pop($parts);
-        if ($camelMessage == 'Error') $camelMessage = array_pop($parts) . $camelMessage;
+        $camelMessage = preg_replace('/^.*?(\w+?)(Exception)?$/', '$1', $fqcn);
 
         return preg_replace('/(\w)([A-Z])/', '\1 \2', $camelMessage);
     }

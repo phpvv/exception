@@ -1,7 +1,6 @@
 {
     "name": "phpvv/exception",
     "description": "VV Exception",
-    "version": "0.2.0",
     "type": "library",
     "license": "MIT",
     "authors": [
