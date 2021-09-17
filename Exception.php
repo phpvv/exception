@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 /*
  * This file is part of the VV package.
@@ -9,15 +8,16 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
+
 namespace VV;
 
 /**
- * Class Error
- *
- * @package VV
+ * Class Exception
  */
-class Exception extends \Exception {
-
+class Exception extends \Exception
+{
     use Exception\Core;
 
     /**
@@ -26,15 +26,22 @@ class Exception extends \Exception {
      *
      * @return string
      */
-    public static function castToString(\Throwable $e, bool $asHtml = null): string {
+    public static function castToString(\Throwable $e, bool $asHtml = null): string
+    {
         // default values from globals
-        if ($asHtml === null) $asHtml = \VV\ISHTTP;
+        if ($asHtml === null) {
+            $asHtml = \VV\ISHTTP;
+        }
 
         // make message
         $className = get_class($e);
-        if ($code = $e->getCode()) $className .= " [$code]";
+        if ($code = $e->getCode()) {
+            $className .= " [$code]";
+        }
         $message = $asHtml ? "<b>$className</b>:\n\n" : "$className: ";
-        if ($bodyMessage = $e->getMessage()) $message .= $bodyMessage;
+        if ($bodyMessage = $e->getMessage()) {
+            $message .= $bodyMessage;
+        }
 
         return $message . "\r\n" . self::backtraceString($e, $asHtml);
     }
@@ -44,28 +51,39 @@ class Exception extends \Exception {
      * @param bool|null  $forHttp
      * @param bool|null  $forDev
      */
-    public static function show(\Throwable $e, bool $forHttp = null, bool $forDev = null): void {
+    public static function show(\Throwable $e, bool $forHttp = null, bool $forDev = null): void
+    {
         try {
-            if ($forHttp === null) $forHttp = \VV\ISHTTP;
-            if ($forDev === null) $forDev = vv()->devMode();
+            if ($forHttp === null) {
+                $forHttp = \VV\ISHTTP;
+            }
+            if ($forDev === null) {
+                $forDev = vv()->devMode();
+            }
 
-            if ($forHttp && !headers_sent()) header('HTTP/1.1 503');
+            if ($forHttp && !headers_sent()) {
+                header('HTTP/1.1 503');
+            }
 
             if ($forDev || !$forHttp) {
                 echo self::castToString($e, $forHttp);
                 exit(1);
             }
 
-            if (file_exists($t = 'vv-maintenance-page.php') || file_exists($t = vv()->appPath() . $t)) {
-                /** @noinspection PhpUnusedLocalVariableInspection */
+            if (file_exists($t = 'vv-maintenance-page.php') || file_exists($t = vv()->appPath() . "/$t")) {
                 $_VV_ERROR = true;
-                /** @noinspection PhpIncludeInspection */
                 require $t;
                 exit;
             }
         } catch (\Throwable) {
         }
-        exit('Unfortunately the application is down for a bit of maintenance right now');
+
+        if (http_response_code(503)) {
+            header('Content-Type: text/plain');
+        }
+
+        echo 'Unfortunately the application is down for a bit of maintenance right now.';
+        exit(1);
     }
 
     /**
@@ -73,28 +91,36 @@ class Exception extends \Exception {
      *
      * @return \RuntimeException
      */
-    public static function runtimeFromPrevious(\Throwable $e): \RuntimeException {
+    public static function runtimeFromPrevious(\Throwable $e): \RuntimeException
+    {
         return new \RuntimeException(get_class($e) . ': ' . $e->getMessage(), 0, $e);
     }
 
-    public static function backtraceString(\Throwable $exc, bool $asHtml = null): string {
-        if ($asHtml === null) $asHtml = \VV\ISHTTP;
+    public static function backtraceString(\Throwable $exc, bool $asHtml = null): string
+    {
+        if ($asHtml === null) {
+            $asHtml = \VV\ISHTTP;
+        }
 
         $eol = "\r\n";
-        $fulltrace = $eol;
+        $fullTrace = $eol;
 
-        $addRecord = function ($ttl, $val) use (&$fulltrace, $asHtml, $eol) {
-            if (!$val) return;
+        $addRecord = function ($ttl, $val) use (&$fullTrace, $asHtml, $eol) {
+            if (!$val) {
+                return;
+            }
             $ttl = "$ttl: ";
-            if ($asHtml) $ttl = "<b>$ttl</b>";
-            $fulltrace .= $ttl . $val . $eol;
+            if ($asHtml) {
+                $ttl = "<b>$ttl</b>";
+            }
+            $fullTrace .= $ttl . $val . $eol;
         };
 
         while ($exc) {
             $addRecord('Exception', '\\' . get_class($exc));
             $addRecord('Message', $exc->getMessage());
             $addRecord('Code', $exc->getCode());
-            $fulltrace .= $eol;
+            $fullTrace .= $eol;
 
             $trace = $exc->getTraceAsString();
             $file = $exc->getFile();
@@ -103,20 +129,22 @@ class Exception extends \Exception {
                 $trows_file = "$file on line $line";
             } else {
                 $trace = \htmlspecialchars($trace);
-                $clbk = function ($m) {
+                $callback = function ($m) {
                     return $m[1] . \VV\ideUrl($m[2], $m[3], "$m[2]($m[3])") . ': ';
                 };
-                $trace = preg_replace_callback('/^(#\d+ )(.*)\((\d+)\): /m', $clbk, $trace);
+                $trace = preg_replace_callback('/^(#\d+ )(.*)\((\d+)\): /m', $callback, $trace);
 
                 $trows_file = \VV\ideUrl($file, $line, true);
             }
 
-            $fulltrace .= "$trace$eol    thrown in $trows_file$eol$eol";
+            $fullTrace .= "$trace$eol    thrown in $trows_file$eol$eol";
             $exc = $exc->getPrevious();
         }
 
-        if (!$asHtml) return $fulltrace;
+        if (!$asHtml) {
+            return $fullTrace;
+        }
 
-        return "<pre>$fulltrace</pre>";
+        return "<pre>$fullTrace</pre>";
     }
 }

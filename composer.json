@@ -20,6 +20,6 @@
         "phpvv/runtime": "0.2.0"
     },
     "require-dev": {
-        "jetbrains/phpstorm-attributes": "^1.0"
+        "squizlabs/php_codesniffer": "^3.6"
     }
 }
